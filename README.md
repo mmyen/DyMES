@@ -1,4 +1,4 @@
-# dyMES
+# DyMES
 
 ## Installation
 To set up this repository, first clone this onto your local machine. Then run
