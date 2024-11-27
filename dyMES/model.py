@@ -10,7 +10,14 @@ import dyMES.default_models as dm
 
 class model:
     def __init__(self, initial_state:float, params:dict = {}, transition_function:Callable = None, num_groups:str = None) -> None:
-
+        """
+        Args:
+            initial_state: Value of state at t=0
+            params: Dict storing all parameters used in transition function
+            transition_function: Transition function as described in paper, look at run_model.ipynb for example usage
+            num_groups: key to variable in "params" which represents the number of groups in the system
+        """
+        
         self.states = [initial_state]
         self.lambdas = [[-0.000001,0]] #Default lambdas used as a starting point to find true values
         self.params = params
@@ -37,10 +44,9 @@ class model:
 
         #Initialize lambdas, lambda 2 should be 0, so self.derivatives is set to 0
         self.derivatives = [0]
-       
         self.lambdas = [self.brute_force_update(init=True)]
-       
         self.lambdas[0][1] = 0 
+        
 
         #Calculate initial derivatives, should be 0 at steady state
         Z = rf.R_mean(self.func, self.states[-1], self.params, self.lambdas[-1])
