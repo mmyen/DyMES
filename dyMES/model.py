@@ -62,8 +62,7 @@ class model:
         Args:
             time: Length of time to perform updates for
             dt: Timestep to use, dt=0.1 seems to be a good value to start off with
-            error_lim: Error limit to accept before printing out a warning, for performance the
-                error not be calculated every timestep
+            error_lim: Error limit to accept before printing out a warning.
         """
 
         num_timesteps = int(time/dt)
