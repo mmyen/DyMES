@@ -17,7 +17,7 @@ class model:
             transition_function: Transition function as described in paper, look at run_model.ipynb for example usage
             num_groups: key to variable in "params" which represents the number of groups in the system
         """
-        
+
         self.states = [initial_state]
         self.lambdas = [[-0.000001,0]] #Default lambdas used as a starting point to find true values
         self.params = params
@@ -56,18 +56,14 @@ class model:
 
 
 
-    def update(self, time:float, dt=0.1, brute_force=True, error_lim=float("inf")) -> None:
+    def update(self, time:float, dt=0.1, error_lim=float("inf")) -> None:
         """Updates model for "time" duration using timesteps of size "dt"
 
         Args:
             time: Length of time to perform updates for
             dt: Timestep to use, dt=0.1 seems to be a good value to start off with
-            brute_force: True if the brute force method should be used to calculate lambdas
-                Otherwise will use the lambda dynamics method
             error_lim: Error limit to accept before printing out a warning, for performance the
                 error not be calculated every timestep
-            
-        
         """
 
         num_timesteps = int(time/dt)
@@ -86,12 +82,11 @@ class model:
            
             self.derivatives.append(f_mean * self.params[self.num_groups])
 
-            if brute_force:
-                new_lambda = self.brute_force_update()
-                self.check_constraints(new_lambda, error_lim = error_lim)
+     
+            new_lambda = self.brute_force_update()
+            self.check_constraints(new_lambda, error_lim = error_lim)
                 
-            else:
-                new_lambda = self.lambda_dynamic_update()
+    
             
             self.lambdas.append(new_lambda)
 
@@ -146,14 +141,7 @@ class model:
 
         return new_lambdas
 
-    def lambda_dynamic_update(self) -> None:
-        """Returns lambda calculated with lambda dynamics method
 
-        Returns:
-            list containing new lambdas
-            
-        """
-        pass
 
     def find_steady_state_params(self, param_key : str) -> float:
         """Finds value for param_key such that <f> = 0
